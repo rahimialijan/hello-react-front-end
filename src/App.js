@@ -1,9 +1,9 @@
 // src/App.js
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setRandomGreeting } from "./redux/actions";
-import Greeting from "./components/Greeting";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRandomGreeting } from './redux/actions';
+import Greeting from './components/Greeting';
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ function App() {
       .then((response) => {
         if (!response.ok) {
           throw new Error(
-            `Network response was not ok: ${response.statusText}`
+            `Network response was not ok: ${response.statusText}`,
           );
         }
         return response.json();
@@ -26,7 +26,7 @@ function App() {
         dispatch(setRandomGreeting(data.greeting));
       })
       .catch((error) => {
-        console.error("Fetch error:", error);
+        console.error('Fetch error:', error);
       });
   }, [dispatch]);
 
