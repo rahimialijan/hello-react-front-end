@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setRandomGreeting } from "./redux/actions";
+import Greeting from "./components/Greeting";
 
 function App() {
+  const dispatch = useDispatch();
+  const randomGreeting = useSelector((state) => state.randomGreeting);
+
+  useEffect(() => {
+    // Fetch random greeting from your API endpoint using the environment variable
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+    fetch(`${apiUrl}/random_greeting`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Network response was not ok: ${response.statusText}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => {
+        dispatch(setRandomGreeting(data.greeting));
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  }, [dispatch]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Greeting message={randomGreeting} />} />
+      </Routes>
+    </Router>
   );
 }
 
